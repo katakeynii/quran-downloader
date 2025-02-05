@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative '../lib/quran_downloader'
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: ./bin/run [options]"
+
+opts.on("-rRECITER", "--reciter=RECITER", "Reciter name") do |reciter|
+    options[:reciter] = reciter
+  end
+
+  opts.on("-uURL", "--url=URL", "URL") do |url|
+    options[:url] = url
+  end
+
+  opts.on("-h", "--help", "Prints this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+if options.empty?
+  puts "No options provided. Use --help for usage."
+else
+  puts "Reciter: #{options[:reciter]}" if options[:reciter]
+  puts "URL: #{options[:url]}" if options[:url]
+  QuranDownloader.download_quran(options[:url], options[:reciter])
+end
